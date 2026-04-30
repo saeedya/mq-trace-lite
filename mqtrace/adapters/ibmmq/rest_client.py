@@ -14,7 +14,11 @@ class MQRestClient:
             url,
             auth=self.auth,
             verify=False,
+            trust_env=False,
         )
+
+        if response.status_code == 204:
+            return []
 
         if response.status_code != 200:
             raise Exception(f"MQ REST error: {response.text}")
