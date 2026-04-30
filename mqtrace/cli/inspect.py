@@ -36,6 +36,8 @@ def inspect(
     table.add_column("Queue")
     table.add_column("Status")
     table.add_column("Host")
+    table.add_column("Timestamp")
+    table.add_column("Size")
 
     for msg in messages:
         table.add_row(
@@ -44,6 +46,8 @@ def inspect(
             msg["queue"],
             msg["status"],
             msg.get("host", "-"),
+            msg["timestamp"],
+            str(msg["size"]),
         )
 
     console.print(table)

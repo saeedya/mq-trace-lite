@@ -74,6 +74,17 @@ profiles:
 
 ---
 
+## Message Metadata
+
+Messages include additional metadata:
+
+- timestamp
+- size
+- headers
+- payload preview
+
+---
+
 ## CLI Usage
 
 ### List profiles
