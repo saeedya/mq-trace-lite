@@ -137,3 +137,9 @@ Current structure:
 ## Local IBM MQ
 
 See [docs/local-ibm-mq.md](docs/local-ibm-mq.md)
+
+---
+
+## Docker Development
+
+See [docs/docker-dev.md](docs/docker-dev.md)
