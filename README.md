@@ -96,6 +96,9 @@ poetry run python -m mqtrace.cli.main inspect \
 
 ## OpenShift Discovery (MVP)
 
+Real Kubernetes/OpenShift discovery is planned, but not enabled yet.
+Current discovery is deterministic fallback/mock behavior for local development.
+
 Current implementation uses **fake discovery**:
 
 ```text
