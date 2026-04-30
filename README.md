@@ -1,13 +1,13 @@
 # MQ Trace Lite
 
-CLI-first debugging and incident tool for IBM MQ in OpenShift environments.
-
 ![Python](https://img.shields.io/badge/python-3.12-blue?logo=python)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![CLI](https://img.shields.io/badge/interface-CLI-orange)
 ![Status](https://img.shields.io/badge/status-MVP-yellow)
 ![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
 ![OpenShift](https://img.shields.io/badge/OpenShift-aware-red?logo=redhat)
+
+CLI-first debugging and incident tool for IBM MQ in OpenShift environments.
 
 ---
 
@@ -24,6 +24,7 @@ CLI-first debugging and incident tool for IBM MQ in OpenShift environments.
   - [CLI Usage](#cli-usage)
     - [List profiles](#list-profiles)
     - [Inspect messages](#inspect-messages)
+  - [Installation (pipx)](#installation-pipx)
   - [OpenShift Discovery (MVP)](#openshift-discovery-mvp)
   - [Message Metadata](#message-metadata)
   - [Setup](#setup)
@@ -56,7 +57,7 @@ It helps engineers:
 In systems using IBM MQ:
 
 * Messages fail and go to DLQ
-* Debugging flows is hard
+* Debugging flows is difficult
 * Replay is manual and risky
 * No simple DevOps-friendly tool exists
 
@@ -123,7 +124,7 @@ profiles:
 ### List profiles
 
 ```bash
-poetry run python -m mqtrace.cli.main profiles
+mqtrace profiles
 ```
 
 ---
@@ -131,16 +132,38 @@ poetry run python -m mqtrace.cli.main profiles
 ### Inspect messages
 
 ```bash
-poetry run python -m mqtrace.cli.main inspect \
+mqtrace inspect \
   --profile sit-pay-engine \
   --queue TEST
 ```
 
 ---
 
+## Installation (pipx)
+
+Build package:
+
+```bash
+poetry build
+```
+
+Install:
+
+```bash
+pipx install dist/*.whl
+```
+
+Run:
+
+```bash
+mqtrace --help
+```
+
+---
+
 ## OpenShift Discovery (MVP)
 
-Currently uses **deterministic fallback**:
+Current implementation uses **deterministic fallback**:
 
 ```text
 <queue_manager>.<namespace>.svc.cluster.local
@@ -193,7 +216,7 @@ docker compose up --build
 Run CLI:
 
 ```bash
-docker compose run --rm app python -m mqtrace.cli.main inspect \
+docker compose run --rm app mqtrace inspect \
   --profile sit-pay-engine \
   --queue TEST
 ```
@@ -202,7 +225,7 @@ docker compose run --rm app python -m mqtrace.cli.main inspect \
 
 ## Tests
 
-Run tests:
+Run:
 
 ```bash
 poetry run pytest
@@ -214,10 +237,8 @@ poetry run pytest
 
 CLI provides clear errors:
 
-Example:
-
 ```bash
-poetry run python -m mqtrace.cli.main inspect --profile wrong --queue TEST
+mqtrace inspect --profile wrong --queue TEST
 ```
 
 ---
@@ -238,6 +259,7 @@ poetry run python -m mqtrace.cli.main inspect --profile wrong --queue TEST
 * OpenShift fake discovery implemented
 * Message metadata added
 * Unit tests available
+* Installable CLI via pipx
 
 ---
 

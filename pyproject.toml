@@ -28,3 +28,6 @@ dev = [
 
 [tool.poetry]
 packages = [{ include = "mqtrace" }]
+
+[project.scripts]
+mqtrace = "mqtrace.cli.main:main"

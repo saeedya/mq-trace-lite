@@ -23,7 +23,7 @@ def version() -> None:
     console.print("mq-trace-lite version 0.1.0")
 
 
-app.command()(inspect)
+app.command(name="inspect")(inspect)
 app.command(name="profiles")(profiles_list)
 
 
