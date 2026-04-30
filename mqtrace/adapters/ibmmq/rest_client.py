@@ -23,6 +23,10 @@ class MQRestClient:
         if response.status_code != 200:
             raise Exception(f"MQ REST error: {response.text}")
 
-        data = response.json()
+        content_type = response.headers.get("content-type", "")
 
-        return data.get("messages", [])[:limit]
+        if "application/json" in content_type:
+            data = response.json()
+            return data.get("messages", [])[:limit]
+
+        return [{"payload": response.text}]

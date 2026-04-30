@@ -25,6 +25,7 @@ def test_get_messages_success(monkeypatch):
 
     class MockResponse:
         status_code = 200
+        headers = {"content-type": "application/json"}
 
         def json(self):
             return {
