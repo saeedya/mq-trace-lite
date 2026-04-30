@@ -2,9 +2,9 @@
 
 ## Overview
 
-MQ Trace Lite is a CLI-first debugging and incident tool for IBM MQ.
+MQ Trace Lite is a CLI-first debugging and incident tool for IBM MQ, designed for OpenShift environments.
 
-It helps engineers inspect messages, understand failures, and safely prepare replay workflows during incidents.
+It helps engineers inspect messages, understand failures, and safely debug message flows across multiple namespaces and environments.
 
 ---
 
@@ -24,134 +24,165 @@ In systems using IBM MQ:
 MQ Trace Lite provides:
 
 * Message inspection from queues and DLQ
-* Filtering by messageId / correlationId
+* Profile-based multi-environment access
+* OpenShift-aware discovery (namespace → MQ)
 * Structured metadata view
-* Safe replay (dry-run first)
-* Audit logging
-
----
-
-## Why this exists
-
-This tool is designed for:
-
-* DevOps engineers
-* Backend developers
-* Incident responders
-
-Who need a simple, safe way to debug and recover messaging issues.
-
----
-
-## Non-Goals (for now)
-
-* Not a full MQ dashboard
-* Not a replacement for IBM MQ Console
-* Not a multi-broker platform (Kafka, RabbitMQ, etc.)
-* Not a UI-first application
-
----
-
-## Tech Direction
-
-* Python (CLI-first)
-* IBM MQ integration
-* Designed to evolve into a broader debugging platform
-
----
-
-## Status
-
-Early stage (MVP planning)
-
----
-
-## CLI Usage
-
-### Show version
-
-```bash
-poetry run python -m mqtrace.cli.main version
-```
-
----
-
-### Inspect messages (fake data for now)
-
-```bash
-poetry run python -m mqtrace.cli.main inspect --queue DLQ.TEST
-```
-
-With options:
-
-```bash
-poetry run python -m mqtrace.cli.main inspect \
-  --queue DLQ.TEST \
-  --limit 3 \
-  --correlation-id corr-123
-```
-
----
-
-## Notes
-
-* Current implementation uses fake data
-* Real IBM MQ integration will be added in future steps
-
----
-
-## Setup
-
-See [docs/setup.md](docs/setup.md)
-
----
+* Safe replay (planned)
+* Audit logging (planned)
 
 ---
 
 ## Architecture
 
-Current structure:
-
-* `cli/` → CLI commands (Typer)
-* `core/` → business logic (message inspection)
-* `adapters/ibmmq/` → IBM MQ integration layer
-
----
-
-## Current Capabilities
-
-* CLI command: `inspect`
-* Fake message inspection
-* Initial IBM MQ adapter structure (mock connection)
+```text
+CLI (Typer)
+ ├── profiles
+ ├── core
+ └── adapters
+      ├── ibmmq
+      └── openshift
+```
 
 ---
 
-## Limitations
+## Profiles
 
-* No real MQ connection yet
-* No real message retrieval
-* No replay functionality yet
+Profiles define how MQ is accessed.
+
+Stored in:
+
+```text
+~/.mqtrace/profiles.yml
+```
+
+### Example
+
+```yaml
+profiles:
+  sit-pay-engine:
+    type: openshift
+    environment: sit
+    namespace: pay-engine
+    queue_manager: QM1
+
+  local-dev:
+    type: static
+    host: localhost
+    port: 1414
+    queue_manager: QM1
+```
 
 ---
 
-## Local IBM MQ
+## CLI Usage
 
-See [docs/local-ibm-mq.md](docs/local-ibm-mq.md)
+### List profiles
+
+```bash
+poetry run python -m mqtrace.cli.main profiles
+```
+
+---
+
+### Inspect messages
+
+```bash
+poetry run python -m mqtrace.cli.main inspect \
+  --profile sit-pay-engine \
+  --queue TEST
+```
+
+---
+
+## OpenShift Discovery (MVP)
+
+Current implementation uses **fake discovery**:
+
+```text
+<queue_manager>.<namespace>.svc.cluster.local
+```
+
+Example:
+
+```text
+QM1.pay-engine.svc.cluster.local
+```
+
+---
+
+## Setup
+
+See:
+
+* docs/setup.md
+* docs/docker-dev.md
 
 ---
 
 ## Docker Development
 
-See [docs/docker-dev.md](docs/docker-dev.md)
+Start services:
+
+```bash
+cd docker
+docker compose up --build
+```
+
+Run CLI:
+
+```bash
+docker compose run --rm app python -m mqtrace.cli.main inspect \
+  --profile sit-pay-engine \
+  --queue TEST
+```
 
 ---
 
-## OpenShift Deployment Model
+## Tests
 
-See [docs/architecture/openshift-deployment-model.md](docs/architecture/openshift-deployment-model.md)
+Run:
+
+```bash
+poetry run pytest
+```
 
 ---
 
-## Profile Model
+## Security Notes
 
-See [docs/architecture/profile-model.md](docs/architecture/profile-model.md)
+* `.env` is not committed
+* Profiles must not contain secrets
+* OpenShift access should use least privilege
+* Production should be read-only initially
+
+---
+
+## Current Status
+
+* Profiles implemented
+* CLI profile-aware
+* OpenShift fake discovery implemented
+* Ready for Kubernetes API integration
+
+---
+
+## Roadmap
+
+* Real OpenShift discovery (Kubernetes API)
+* Real MQ message reading
+* DLQ replay (safe mode)
+* Audit logging
+* RBAC integration
+
+---
+
+## References
+
+* docs/architecture/openshift-deployment-model.md
+* docs/architecture/profile-model.md
+
+---
+
+## License
+
+MIT
