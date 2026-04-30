@@ -36,10 +36,12 @@ def get_messages(profile: dict, queue: str, correlation_id: str | None, limit: i
 
 
 def _get_static_messages(profile, queue, correlation_id, limit):
+    rest_cfg = profile.get("rest", {})
+
     client = MQRestClient(
-        base_url="https://localhost:9443/ibmmq/rest/v2",
-        username="admin",
-        password="passw0rd",
+        base_url=rest_cfg.get("base_url", "https://localhost:9443/ibmmq/rest/v2"),
+        username=rest_cfg.get("username", "app"),
+        password=rest_cfg.get("password", "passw0rd"),
         qmgr=profile.get("queue_manager", "QM1"),
     )
 
@@ -59,8 +61,8 @@ def _get_static_messages(profile, queue, correlation_id, limit):
 
         return result
 
-    except Exception:
-        return [_build_message(i, queue, correlation_id, "FALLBACK") for i in range(limit)]
+    except Exception as e:
+        raise RuntimeError(f"MQ REST read failed: {e}") from e
 
 
 def _get_openshift_messages(profile, queue, correlation_id, limit):
