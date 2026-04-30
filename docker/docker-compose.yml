@@ -28,7 +28,7 @@ services:
       MQ_PORT: 1414
       MQ_CHANNEL: DEV.APP.SVRCONN
       MQ_QUEUE_MANAGER: QM1
-    command: poetry run python -m mqtrace.cli.main --help
+    command: python -m mqtrace.cli.main --help
 
 volumes:
   mq-data:
