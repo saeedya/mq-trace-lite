@@ -143,3 +143,9 @@ See [docs/local-ibm-mq.md](docs/local-ibm-mq.md)
 ## Docker Development
 
 See [docs/docker-dev.md](docs/docker-dev.md)
+
+---
+
+## OpenShift Deployment Model
+
+See [docs/architecture/openshift-deployment-model.md](docs/architecture/openshift-deployment-model.md)
