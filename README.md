@@ -149,3 +149,9 @@ See [docs/docker-dev.md](docs/docker-dev.md)
 ## OpenShift Deployment Model
 
 See [docs/architecture/openshift-deployment-model.md](docs/architecture/openshift-deployment-model.md)
+
+---
+
+## Profile Model
+
+See [docs/architecture/profile-model.md](docs/architecture/profile-model.md)
