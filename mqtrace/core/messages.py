@@ -40,6 +40,7 @@ def _get_static_messages(profile, queue, correlation_id, limit):
         base_url="https://localhost:9443/ibmmq/rest/v2",
         username="admin",
         password="passw0rd",
+        qmgr=profile.get("queue_manager", "QM1"),
     )
 
     try:
