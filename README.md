@@ -1,10 +1,53 @@
 # MQ Trace Lite
 
+CLI-first debugging and incident tool for IBM MQ in OpenShift environments.
+
+![Python](https://img.shields.io/badge/python-3.12-blue?logo=python)
+![License](https://img.shields.io/badge/license-MIT-green)
+![CLI](https://img.shields.io/badge/interface-CLI-orange)
+![Status](https://img.shields.io/badge/status-MVP-yellow)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![OpenShift](https://img.shields.io/badge/OpenShift-aware-red?logo=redhat)
+
+---
+
+## Table of Contents
+
+- [MQ Trace Lite](#mq-trace-lite)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Problem](#problem)
+  - [Solution](#solution)
+  - [Architecture](#architecture)
+  - [Profiles](#profiles)
+    - [Example](#example)
+  - [CLI Usage](#cli-usage)
+    - [List profiles](#list-profiles)
+    - [Inspect messages](#inspect-messages)
+  - [OpenShift Discovery (MVP)](#openshift-discovery-mvp)
+  - [Message Metadata](#message-metadata)
+  - [Setup](#setup)
+  - [Docker Development](#docker-development)
+  - [Tests](#tests)
+  - [Error Handling](#error-handling)
+  - [Security Notes](#security-notes)
+  - [Current Status](#current-status)
+  - [Roadmap](#roadmap)
+  - [Architecture Docs](#architecture-docs)
+  - [License](#license)
+
+---
+
 ## Overview
 
 MQ Trace Lite is a CLI-first debugging and incident tool for IBM MQ, designed for OpenShift environments.
 
-It helps engineers inspect messages, understand failures, and safely debug message flows across multiple namespaces and environments.
+It helps engineers:
+
+* Inspect messages
+* Understand failures
+* Debug message flows
+* Prepare safe replay workflows
 
 ---
 
@@ -12,10 +55,10 @@ It helps engineers inspect messages, understand failures, and safely debug messa
 
 In systems using IBM MQ:
 
-* Messages can fail and end up in Dead Letter Queues (DLQ)
-* Debugging message flow is difficult
-* Replay is often manual and risky
-* There is no simple developer-friendly tool for inspection and recovery
+* Messages fail and go to DLQ
+* Debugging flows is hard
+* Replay is manual and risky
+* No simple DevOps-friendly tool exists
 
 ---
 
@@ -23,10 +66,10 @@ In systems using IBM MQ:
 
 MQ Trace Lite provides:
 
-* Message inspection from queues and DLQ
+* Message inspection
 * Profile-based multi-environment access
 * OpenShift-aware discovery (namespace → MQ)
-* Structured metadata view
+* Structured message metadata
 * Safe replay (planned)
 * Audit logging (planned)
 
@@ -49,7 +92,7 @@ CLI (Typer)
 
 Profiles define how MQ is accessed.
 
-Stored in:
+Location:
 
 ```text
 ~/.mqtrace/profiles.yml
@@ -64,6 +107,7 @@ profiles:
     environment: sit
     namespace: pay-engine
     queue_manager: QM1
+    channel: DEV.APP.SVRCONN
 
   local-dev:
     type: static
@@ -71,17 +115,6 @@ profiles:
     port: 1414
     queue_manager: QM1
 ```
-
----
-
-## Message Metadata
-
-Messages include additional metadata:
-
-- timestamp
-- size
-- headers
-- payload preview
 
 ---
 
@@ -107,10 +140,7 @@ poetry run python -m mqtrace.cli.main inspect \
 
 ## OpenShift Discovery (MVP)
 
-Real Kubernetes/OpenShift discovery is planned, but not enabled yet.
-Current discovery is deterministic fallback/mock behavior for local development.
-
-Current implementation uses **fake discovery**:
+Currently uses **deterministic fallback**:
 
 ```text
 <queue_manager>.<namespace>.svc.cluster.local
@@ -121,6 +151,24 @@ Example:
 ```text
 QM1.pay-engine.svc.cluster.local
 ```
+
+Real Kubernetes API integration is planned.
+
+---
+
+## Message Metadata
+
+Each message includes:
+
+* `message_id`
+* `correlation_id`
+* `timestamp`
+* `size`
+* `headers`
+* `payload_preview`
+* `queue`
+* `status`
+* `host`
 
 ---
 
@@ -154,7 +202,7 @@ docker compose run --rm app python -m mqtrace.cli.main inspect \
 
 ## Tests
 
-Run:
+Run tests:
 
 ```bash
 poetry run pytest
@@ -162,18 +210,9 @@ poetry run pytest
 
 ---
 
-## Security Notes
-
-* `.env` is not committed
-* Profiles must not contain secrets
-* OpenShift access should use least privilege
-* Production should be read-only initially
-
----
-
 ## Error Handling
 
-The CLI provides clear errors for invalid input, such as unknown profiles.
+CLI provides clear errors:
 
 Example:
 
@@ -183,35 +222,41 @@ poetry run python -m mqtrace.cli.main inspect --profile wrong --queue TEST
 
 ---
 
+## Security Notes
+
+* `.env` is not committed
+* Profiles must not contain secrets
+* OpenShift access should follow least privilege
+* Production should be read-only initially
+
+---
+
 ## Current Status
 
 * Profiles implemented
 * CLI profile-aware
 * OpenShift fake discovery implemented
-* Ready for Kubernetes API integration
+* Message metadata added
+* Unit tests available
 
 ---
 
 ## Roadmap
 
-* Real OpenShift discovery (Kubernetes API)
-* Real MQ message reading
+* Kubernetes API integration
+* Real MQ message retrieval
 * DLQ replay (safe mode)
 * Audit logging
-* RBAC integration
+* Flow visualization
+* Dashboard (future)
 
 ---
 
-## Future Dashboard
-
-See [docs/architecture/future-dashboard.md](docs/architecture/future-dashboard.md)
-
----
-
-## References
+## Architecture Docs
 
 * docs/architecture/openshift-deployment-model.md
 * docs/architecture/profile-model.md
+* docs/architecture/future-dashboard.md
 
 ---
 
