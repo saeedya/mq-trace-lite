@@ -160,6 +160,18 @@ poetry run pytest
 
 ---
 
+## Error Handling
+
+The CLI provides clear errors for invalid input, such as unknown profiles.
+
+Example:
+
+```bash
+poetry run python -m mqtrace.cli.main inspect --profile wrong --queue TEST
+```
+
+---
+
 ## Current Status
 
 * Profiles implemented

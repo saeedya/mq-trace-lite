@@ -5,6 +5,7 @@ def get_profile(name: str) -> dict:
     profiles = load_profiles()
 
     if name not in profiles:
-        raise ValueError(f"Profile '{name}' not found")
+        available = ", ".join(profiles.keys()) or "none"
+        raise ValueError(f"Profile '{name}' not found. Available: {available}")
 
     return profiles[name]

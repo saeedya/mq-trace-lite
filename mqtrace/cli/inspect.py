@@ -15,7 +15,15 @@ def inspect(
 ):
     """Inspect messages from a queue."""
 
-    cfg = get_profile(profile)
+    if not queue:
+        console.print("[red]Queue is required[/red]")
+        raise typer.Exit(1)
+
+    try:
+        cfg = get_profile(profile)
+    except ValueError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1)
 
     console.print(f"[bold green]Profile:[/bold green] {profile}")
     console.print(f"[bold green]Queue:[/bold green] {queue}")
@@ -23,7 +31,6 @@ def inspect(
     messages = get_messages(cfg, queue, correlation_id, limit)
 
     table = Table(title="Messages")
-
     table.add_column("Message ID")
     table.add_column("Correlation ID")
     table.add_column("Queue")
