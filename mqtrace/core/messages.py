@@ -56,6 +56,7 @@ def _get_static_messages(profile, queue, correlation_id, limit):
                     queue=queue,
                     correlation_id=correlation_id,
                     status="REAL",
+                    host=profile.get("rest", {}).get("base_url"),
                 )
             )
 
