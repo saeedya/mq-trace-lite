@@ -24,6 +24,18 @@ Example:
 docker compose run --rm app poetry run python -m mqtrace.cli.main inspect --queue DLQ.TEST
 ```
 
+## Local Secrets
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Update values if needed.
+
+Never commit .env.
+
 ## Notes
 - App runs inside container
 - MQ config is passed using environment variables
