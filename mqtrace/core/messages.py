@@ -1,5 +1,16 @@
+from mqtrace.adapters.ibmmq.client import MQClient
+from mqtrace.config import config
+
+
 def get_messages(queue: str, correlation_id: str | None, limit: int):
-    """Return fake messages (placeholder for real MQ)."""
+    client = MQClient(
+        host=config.MQ_HOST,
+        port=config.MQ_PORT,
+        channel=config.MQ_CHANNEL,
+        queue_manager=config.MQ_QUEUE_MANAGER,
+    )
+
+    client.connect()
 
     messages = []
 
@@ -12,5 +23,7 @@ def get_messages(queue: str, correlation_id: str | None, limit: int):
                 "status": "READY",
             }
         )
+
+    client.disconnect()
 
     return messages

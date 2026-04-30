@@ -66,8 +66,6 @@ Early stage (MVP planning)
 
 ---
 
----
-
 ## CLI Usage
 
 ### Show version
@@ -105,3 +103,32 @@ poetry run python -m mqtrace.cli.main inspect \
 ## Setup
 
 See [docs/setup.md](docs/setup.md)
+
+---
+
+---
+
+## Architecture
+
+Current structure:
+
+* `cli/` → CLI commands (Typer)
+* `core/` → business logic (message inspection)
+* `adapters/ibmmq/` → IBM MQ integration layer
+
+---
+
+## Current Capabilities
+
+* CLI command: `inspect`
+* Fake message inspection
+* Initial IBM MQ adapter structure (mock connection)
+
+---
+
+## Limitations
+
+* No real MQ connection yet
+* No real message retrieval
+* No replay functionality yet
+
