@@ -1,6 +1,7 @@
 import typer
 from rich.console import Console
 from rich.table import Table
+from mqtrace.core.messages import get_messages
 
 console = Console()
 
@@ -10,12 +11,11 @@ def inspect(
     correlation_id: str = typer.Option(None, help="Filter by correlation ID"),
     limit: int = typer.Option(5, help="Number of messages to show"),
 ):
-    """Inspect messages from a queue (fake data for now)."""
+    """Inspect messages from a queue."""
 
     console.print(f"[bold green]Inspecting queue:[/bold green] {queue}")
 
-    if correlation_id:
-        console.print(f"[yellow]Filter:[/yellow] correlation_id={correlation_id}")
+    messages = get_messages(queue, correlation_id, limit)
 
     table = Table(title="Messages")
 
@@ -24,13 +24,12 @@ def inspect(
     table.add_column("Queue")
     table.add_column("Status")
 
-    # fake data
-    for i in range(limit):
+    for msg in messages:
         table.add_row(
-            f"msg-{i}",
-            correlation_id or f"corr-{i}",
-            queue,
-            "READY",
+            msg["message_id"],
+            msg["correlation_id"],
+            msg["queue"],
+            msg["status"],
         )
 
     console.print(table)
