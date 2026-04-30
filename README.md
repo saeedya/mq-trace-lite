@@ -176,6 +176,12 @@ poetry run pytest
 
 ---
 
+## Future Dashboard
+
+See [docs/architecture/future-dashboard.md](docs/architecture/future-dashboard.md)
+
+---
+
 ## References
 
 * docs/architecture/openshift-deployment-model.md
