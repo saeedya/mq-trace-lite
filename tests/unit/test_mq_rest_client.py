@@ -7,6 +7,7 @@ def test_mq_rest_client_init():
         base_url="https://localhost:9443/ibmmq/rest/v2",
         username="app",
         password="passw0rd",
+        qmgr="QM1",
     )
 
     assert client.base_url.startswith("https")
@@ -17,7 +18,10 @@ def test_get_messages_success(monkeypatch):
         base_url="https://localhost:9443/ibmmq/rest/v2",
         username="app",
         password="passw0rd",
+        qmgr="QM1",
     )
+
+    assert client.qmgr == "QM1"
 
     class MockResponse:
         status_code = 200
