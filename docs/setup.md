@@ -30,7 +30,7 @@ poetry --version
 From project root:
 
 ```bash
-poetry install --no-root
+poetry install
 ```
 
 ---
