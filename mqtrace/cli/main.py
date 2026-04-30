@@ -1,6 +1,7 @@
 import typer
 from rich.console import Console
 from mqtrace.cli.inspect import inspect
+from mqtrace.cli.profiles import profiles_list
 
 app = typer.Typer(
     help="CLI-first IBM MQ debugging and incident tool.",
@@ -23,6 +24,7 @@ def version() -> None:
 
 
 app.command()(inspect)
+app.command(name="profiles")(profiles_list)
 
 
 def main() -> None:
