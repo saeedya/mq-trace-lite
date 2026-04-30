@@ -279,6 +279,7 @@ mqtrace inspect --profile wrong --queue TEST
 * docs/architecture/openshift-deployment-model.md
 * docs/architecture/profile-model.md
 * docs/architecture/future-dashboard.md
+* docs/mq-rest-manual-test.md
 
 ---
 
