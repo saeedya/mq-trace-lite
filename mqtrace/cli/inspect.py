@@ -28,6 +28,7 @@ def inspect(
     table.add_column("Correlation ID")
     table.add_column("Queue")
     table.add_column("Status")
+    table.add_column("Host")
 
     for msg in messages:
         table.add_row(
@@ -35,6 +36,7 @@ def inspect(
             msg["correlation_id"],
             msg["queue"],
             msg["status"],
+            msg.get("host", "-"),
         )
 
     console.print(table)

@@ -1,6 +1,6 @@
 from mqtrace.adapters.ibmmq.client import MQClient
 from mqtrace.config import config
-
+from mqtrace.adapters.openshift.discovery import discover_qmgr
 
 def get_messages(profile: dict, queue: str, correlation_id: str | None, limit: int):
     """Return messages based on profile type."""
@@ -35,7 +35,11 @@ def _get_static_messages(profile, queue, correlation_id, limit):
 
 
 def _get_openshift_messages(profile, queue, correlation_id, limit):
-    # فعلاً fake
+    conn = discover_qmgr(
+        namespace=profile["namespace"],
+        name=profile["queue_manager"],
+    )
+
     messages = []
 
     for i in range(limit):
@@ -45,6 +49,7 @@ def _get_openshift_messages(profile, queue, correlation_id, limit):
                 "correlation_id": correlation_id or f"corr-{i}",
                 "queue": queue,
                 "status": "OCP",
+                "host": conn["host"],
             }
         )
 
