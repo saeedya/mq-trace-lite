@@ -94,3 +94,25 @@ When `DEV.QUEUE.1` has no messages, IBM MQ REST returns:
 ```text
 HTTP/1.1 204 No Content
 ```
+
+MQ Trace Lite treats this as an empty message list and displays an empty table instead of failing.
+
+---
+
+## Plain Text Message Behavior
+
+When reading messages via IBM MQ REST API, the response may not always be JSON.
+
+For plain-text messages, the API returns raw content instead of a JSON structure.
+
+MQ Trace Lite handles this by:
+
+- Detecting `content-type`
+- Falling back to raw text parsing
+- Converting it into an internal message structure
+
+Example:
+
+```text
+hello from mqtrace
+```
