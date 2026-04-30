@@ -132,3 +132,8 @@ Current structure:
 * No real message retrieval
 * No replay functionality yet
 
+---
+
+## Local IBM MQ
+
+See [docs/local-ibm-mq.md](docs/local-ibm-mq.md)
