@@ -84,3 +84,13 @@ curl -k -u app:passw0rd   https://localhost:9443/ibmmq/rest/v2/messaging/qmgr/QM
 This is local development only.
 Credentials are not production-safe.
 Production must use proper TLS/mTLS and non-default credentials.
+
+---
+
+## Empty Queue Behavior
+
+When `DEV.QUEUE.1` has no messages, IBM MQ REST returns:
+
+```text
+HTTP/1.1 204 No Content
+```
