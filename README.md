@@ -63,3 +63,45 @@ Who need a simple, safe way to debug and recover messaging issues.
 ## Status
 
 Early stage (MVP planning)
+
+---
+
+---
+
+## CLI Usage
+
+### Show version
+
+```bash
+poetry run python -m mqtrace.cli.main version
+```
+
+---
+
+### Inspect messages (fake data for now)
+
+```bash
+poetry run python -m mqtrace.cli.main inspect --queue DLQ.TEST
+```
+
+With options:
+
+```bash
+poetry run python -m mqtrace.cli.main inspect \
+  --queue DLQ.TEST \
+  --limit 3 \
+  --correlation-id corr-123
+```
+
+---
+
+## Notes
+
+* Current implementation uses fake data
+* Real IBM MQ integration will be added in future steps
+
+---
+
+## Setup
+
+See [docs/setup.md](docs/setup.md)
