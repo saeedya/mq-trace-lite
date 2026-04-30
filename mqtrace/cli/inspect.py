@@ -20,7 +20,7 @@ def inspect(
     console.print(f"[bold green]Profile:[/bold green] {profile}")
     console.print(f"[bold green]Queue:[/bold green] {queue}")
 
-    messages = get_messages(queue, correlation_id, limit)
+    messages = get_messages(cfg, queue, correlation_id, limit)
 
     table = Table(title="Messages")
 
