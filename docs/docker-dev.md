@@ -15,13 +15,13 @@ app: MQ Trace Lite CLI container
 
 ## Run CLI inside container
 ```bash
-docker compose run --rm app poetry run python -m mqtrace.cli.main --help
+docker compose run --rm app python -m mqtrace.cli.main --help
 ```
 
 Example:
 
 ```bash
-docker compose run --rm app poetry run python -m mqtrace.cli.main inspect --queue DLQ.TEST
+docker compose run --rm app python -m mqtrace.cli.main inspect --queue DLQ.TEST
 ```
 
 ## Local Secrets
@@ -40,3 +40,9 @@ Never commit .env.
 - App runs inside container
 - MQ config is passed using environment variables
 - This environment is for local development only
+
+## Security Notes
+
+This local IBM MQ setup is for development only.
+
+The dev container may run with plain-text communication enabled. Production deployments must use TLS or mTLS, secure channel configuration, and non-default credentials.
