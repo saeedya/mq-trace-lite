@@ -14,14 +14,18 @@ MQ native support will run inside a dedicated Docker container.
 
 ---
 
-## Target Image
+## Target Image Decision
 
-The Docker image will include:
+MQ Trace Lite will use a dedicated native-client image:
 
-- Python runtime
-- pymqi
-- IBM MQ Client libraries (/opt/mqm)
-- Required headers (cmqc.h, etc.)
+```text
+python:3.12-slim
++ IBM MQ C Redistributable Client
++ IBM MQ SDK headers
++ pymqi
+```
+
+The IBM MQ Server image will not be used as the base image for the CLI tool because it is too heavy and designed for running queue managers, not client applications.
 
 ---
 
