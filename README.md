@@ -38,6 +38,7 @@ CLI-first debugging and incident tool for IBM MQ in OpenShift environments.
   - [Current Status](#current-status)
   - [Roadmap](#roadmap)
   - [Architecture Docs](#architecture-docs)
+  - [Release](#release)
   - [License](#license)
 
 ---
@@ -306,6 +307,12 @@ mqtrace inspect --profile wrong --queue TEST
 * docs/architecture/future-dashboard.md
 * docs/architecture/mq-native-browse.md
 * docs/architecture/mq-native-docker.md
+
+---
+
+## Release
+
+See: docs/release-process.md
 
 ---
 
