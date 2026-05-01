@@ -276,11 +276,17 @@ mqtrace inspect --profile wrong --queue TEST
 
 ## Architecture Docs
 
+* docs/setup.md
+* docs/docker-dev.md
+* docs/local-ibm-mq.md
+* docs/mq-rest-manual-test.md
+* docs/native-cli-docker.md
+* docs/pymqi-install-notes.md
 * docs/architecture/openshift-deployment-model.md
 * docs/architecture/profile-model.md
 * docs/architecture/future-dashboard.md
-* docs/mq-rest-manual-test.md
-* docs/native-cli-docker.md
+* docs/architecture/mq-native-browse.md
+* docs/architecture/mq-native-docker.md
 
 ---
 
