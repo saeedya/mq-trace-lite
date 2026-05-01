@@ -28,3 +28,16 @@ Instead, we will use a Docker-based development environment in a future step.
 ## Status
 
 Real MQ connection is postponed until the containerized client environment is prepared.
+
+## Current Decision
+
+`pymqi` will not be installed directly on the developer laptop.
+
+Native MQ support will require a dedicated Docker image that includes:
+
+- IBM MQ client headers
+- IBM MQ client libraries
+- pymqi
+- Python runtime
+
+This avoids requiring every developer to install IBM MQ Client locally.
