@@ -4,7 +4,7 @@ from mqtrace.adapters.openshift.discovery import discover_qmgr
 from mqtrace.adapters.ibmmq.rest_client import MQRestClient
 
 
-def _build_message(i, queue, correlation_id, status, host=None):
+def _build_message(i, queue, correlation_id, status, host=None, payload_preview=None):
     return {
         "message_id": f"msg-{i}",
         "correlation_id": correlation_id or f"corr-{i}",
@@ -17,7 +17,7 @@ def _build_message(i, queue, correlation_id, status, host=None):
             "content_type": "application/json",
             "app_id": "payment-service",
         },
-        "payload_preview": f'{{"amount": {100+i}, "currency": "USD"}}',
+        "payload_preview": payload_preview or f'{{"amount": {100+i}, "currency": "USD"}}',
     }
 
 
@@ -57,6 +57,7 @@ def _get_static_messages(profile, queue, correlation_id, limit):
                     correlation_id=correlation_id,
                     status="REAL",
                     host=profile.get("rest", {}).get("base_url"),
+                    payload_preview=m.get("payload", str(m)),
                 )
             )
 
