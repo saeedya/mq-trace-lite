@@ -9,6 +9,12 @@ RUN apt-get update && apt-get install -y \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
+# Download IBM MQ Redistributable Client
+RUN mkdir -p /opt/mqm \
+    && wget -q https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqdev/redist/9.4.2.0-IBM-MQC-Redist-LinuxX64.tar.gz \
+    && tar -xzf 9.4.2.0-IBM-MQC-Redist-LinuxX64.tar.gz -C /opt/mqm \
+    && rm 9.4.2.0-IBM-MQC-Redist-LinuxX64.tar.gz
+
 # poetry
 RUN pip install poetry
 
