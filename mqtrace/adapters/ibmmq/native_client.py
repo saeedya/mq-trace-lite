@@ -14,13 +14,23 @@ class MQNativeClient:
         conn_info = f"{self.host}({self.port})"
 
         cd = pymqi.CD()
-        cd.ChannelName = self.channel
-        cd.ConnectionName = conn_info
+
+        cd.ChannelName = self.channel.encode("utf-8")
+        cd.ConnectionName = conn_info.encode("utf-8")
 
         qmgr = pymqi.QueueManager(None)
-        qmgr.connect_with_options(self.queue_manager, cd)
+        qmgr.connect_with_options(
+            self.queue_manager,
+            cd=cd,
+            user=(self.username or "app"),
+            password=(self.password or "passw0rd"),
+        )
 
-        queue_obj = pymqi.Queue(qmgr, queue)
+        queue_obj = pymqi.Queue(
+            qmgr,
+            queue,
+            pymqi.CMQC.MQOO_BROWSE | pymqi.CMQC.MQOO_FAIL_IF_QUIESCING,
+        )
 
         gmo = pymqi.GMO()
         gmo.Options = pymqi.CMQC.MQGMO_BROWSE_FIRST
@@ -28,7 +38,8 @@ class MQNativeClient:
         messages = []
 
         try:
-            msg = queue_obj.get(None, gmo)
+            md = pymqi.MD()
+            msg = queue_obj.get(None, md, gmo)
             messages.append(msg.decode())
         except pymqi.MQMIError as e:
             if e.reason != pymqi.CMQC.MQRC_NO_MSG_AVAILABLE:
