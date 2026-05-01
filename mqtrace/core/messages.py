@@ -31,6 +31,9 @@ def get_messages(profile: dict, queue: str, correlation_id: str | None, limit: i
 
     if profile_type == "openshift":
         return _get_openshift_messages(profile, queue, correlation_id, limit)
+    
+    if profile_type == "native":
+        return _get_native_messages(profile, queue, correlation_id, limit)
 
     raise ValueError(f"Unsupported profile type: {profile_type}")
 
@@ -87,3 +90,31 @@ def _get_openshift_messages(profile, queue, correlation_id, limit):
         )
 
     return messages
+
+def _get_native_messages(profile, queue, correlation_id, limit):
+    from mqtrace.adapters.ibmmq.native_client import MQNativeClient
+
+    client = MQNativeClient(
+        host=profile.get("host"),
+        port=profile.get("port"),
+        channel=profile.get("channel"),
+        queue_manager=profile.get("queue_manager"),
+        username=profile.get("username"),
+        password=profile.get("password"),
+    )
+
+    msgs = client.browse_messages(queue, limit)
+
+    result = []
+    for i, m in enumerate(msgs):
+        result.append(
+            _build_message(
+                i=i,
+                queue=queue,
+                correlation_id=correlation_id,
+                status="NATIVE",
+                payload_preview=m,
+            )
+        )
+
+    return result
