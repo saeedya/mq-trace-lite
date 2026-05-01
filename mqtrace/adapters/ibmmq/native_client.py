@@ -7,14 +7,12 @@ class MQNativeClient:
         self.username = username
         self.password = password
 
-    def browse_messages(self, queue: str, limit: int = 1):
-
+    def browse_messages(self, queue: str, limit: int = 5):
         import pymqi
 
         conn_info = f"{self.host}({self.port})"
 
         cd = pymqi.CD()
-
         cd.ChannelName = self.channel.encode("utf-8")
         cd.ConnectionName = conn_info.encode("utf-8")
 
@@ -33,14 +31,23 @@ class MQNativeClient:
         )
 
         gmo = pymqi.GMO()
-        gmo.Options = pymqi.CMQC.MQGMO_BROWSE_FIRST
+        md = pymqi.MD()
 
         messages = []
 
         try:
-            md = pymqi.MD()
+            # First message
+            gmo.Options = pymqi.CMQC.MQGMO_BROWSE_FIRST
             msg = queue_obj.get(None, md, gmo)
             messages.append(msg.decode())
+
+            # Next messages
+            for _ in range(limit - 1):
+                md = pymqi.MD()
+                gmo.Options = pymqi.CMQC.MQGMO_BROWSE_NEXT
+                msg = queue_obj.get(None, md, gmo)
+                messages.append(msg.decode())
+
         except pymqi.MQMIError as e:
             if e.reason != pymqi.CMQC.MQRC_NO_MSG_AVAILABLE:
                 raise
