@@ -1,6 +1,3 @@
-import pymqi
-
-
 class MQNativeClient:
     def __init__(self, host, port, channel, queue_manager, username=None, password=None):
         self.host = host
@@ -11,6 +8,9 @@ class MQNativeClient:
         self.password = password
 
     def browse_messages(self, queue: str, limit: int = 1):
+
+        import pymqi
+
         conn_info = f"{self.host}({self.port})"
 
         cd = pymqi.CD()
