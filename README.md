@@ -19,6 +19,9 @@ CLI-first debugging and incident tool for IBM MQ in OpenShift environments.
   - [Problem](#problem)
   - [Solution](#solution)
   - [Architecture](#architecture)
+  - [Modes](#modes)
+    - [REST mode (default)](#rest-mode-default)
+    - [Native mode (recommended)](#native-mode-recommended)
   - [Profiles](#profiles)
     - [Example](#example)
   - [CLI Usage](#cli-usage)
@@ -86,6 +89,22 @@ CLI (Typer)
       ├── ibmmq
       └── openshift
 ```
+
+---
+
+## Modes
+
+MQ Trace Lite supports two modes:
+
+### REST mode (default)
+- Uses IBM MQ REST API
+- Useful for development and quick tests
+- May consume messages
+
+### Native mode (recommended)
+- Uses IBM MQ native client (pymqi)
+- Runs inside Docker
+- Supports non-destructive browse (safe for production-like environments)
 
 ---
 
