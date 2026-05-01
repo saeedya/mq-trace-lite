@@ -38,6 +38,7 @@ def inspect(
     table.add_column("Host")
     table.add_column("Timestamp")
     table.add_column("Size")
+    table.add_column("Payload")
 
     for msg in messages:
         table.add_row(
@@ -48,6 +49,7 @@ def inspect(
             msg.get("host", "-"),
             msg["timestamp"],
             str(msg["size"]),
+            msg.get("payload_preview", "-"),
         )
 
     console.print(table)
