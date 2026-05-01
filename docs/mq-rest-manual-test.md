@@ -116,3 +116,29 @@ Example:
 ```text
 hello from mqtrace
 ```
+
+---
+
+## Current Limitation
+
+At the moment, MQ Trace Lite reads only a single message from IBM MQ REST API.
+
+This is because:
+
+- The REST endpoint `/message` returns one message per request
+- The current implementation does not loop or support batch retrieval
+- Messages may appear "stuck" on the same value during repeated reads
+
+Example behavior:
+
+- Queue contains:
+  - hello MQ REAL
+  - hello from mqtrace
+- CLI shows only:
+  - hello from mqtrace
+
+### Future Improvement
+
+- Implement loop-based retrieval
+- Support multiple message fetch
+- Add non-destructive browse (peek) mode
