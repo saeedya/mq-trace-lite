@@ -18,6 +18,11 @@ RUN mkdir -p /opt/mqm \
 # poetry
 RUN pip install poetry
 
+ENV MQ_HOME=/opt/mqm
+ENV LD_LIBRARY_PATH=/opt/mqm/lib64
+
+RUN pip install pymqi
+
 # copy deps
 COPY pyproject.toml poetry.lock ./
 
