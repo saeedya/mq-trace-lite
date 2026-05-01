@@ -280,6 +280,7 @@ mqtrace inspect --profile wrong --queue TEST
 * docs/architecture/profile-model.md
 * docs/architecture/future-dashboard.md
 * docs/mq-rest-manual-test.md
+* docs/native-cli-docker.md
 
 ---
 
